@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="card">
+    <div class="page-header">
+      <h2>Transferência entre Benefícios</h2>
+    </div>
+
+    <div class="alert alert-success" *ngIf="sucesso">{{ sucesso }}</div>
+    <div class="alert alert-danger"  *ngIf="erro">{{ erro }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="transferir()">
+      <div class="form-group">
+        <label>ID de Origem *</label>
+        <input formControlName="fromId" type="number" placeholder="ID do benefício de origem" />
+        <small style="color:#d32f2f"
+          *ngIf="form.get('fromId')?.invalid && form.get('fromId')?.touched">
+          Informe o ID de origem.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>ID de Destino *</label>
+        <input formControlName="toId" type="number" placeholder="ID do benefício de destino" />
+        <small style="color:#d32f2f"
+          *ngIf="form.get('toId')?.invalid && form.get('toId')?.touched">
+          Informe o ID de destino.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Valor (R$) *</label>
+        <div style="position:relative">
+          <span style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:#666;pointer-events:none">R$</span>
+          <input
+            [value]="amountFormatado"
+            (input)="onAmountInput($event)"
+            placeholder="0,00"
+            inputmode="numeric"
+            style="padding-left:2.5rem"
+            [class.input-error]="form.get('amount')?.invalid && form.get('amount')?.touched" />
+        </div>
+        <small style="color:#d32f2f"
+          *ngIf="form.get('amount')?.invalid && form.get('amount')?.touched">
+          Informe um valor positivo.
+        </small>
+      </div>
+
+      <div class="actions" style="margin-top:1rem">
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid || enviando">
+          {{ enviando ? 'Transferindo...' : 'Transferir' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="voltar()">Voltar</button>
+      </div>
+    </form>
+
+    <p style="margin-top:1.2rem;font-size:.85rem;color:#666">
+      <strong>Nota:</strong> O sistema valida saldo antes de qualquer débito, para evitar inconsistências em acessos concorrentes.
+    </p>
+  </div>
+</div>

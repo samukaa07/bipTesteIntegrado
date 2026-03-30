@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="page-header">
+    <h2>Benefícios</h2>
+    <div class="actions">
+      <button class="btn btn-success" (click)="novo()">+ Novo</button>
+      <a class="btn btn-primary" routerLink="/transferencia">Transferir</a>
+    </div>
+  </div>
+
+  <div class="alert alert-success" *ngIf="sucesso">{{ sucesso }}</div>
+  <div class="alert alert-danger"  *ngIf="erro">{{ erro }}</div>
+
+  <p *ngIf="carregando">Carregando...</p>
+
+  <table *ngIf="!carregando">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Valor (R$)</th>
+        <th>Ativo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let b of beneficios">
+        <td>{{ b.id }}</td>
+        <td>{{ b.nome }}</td>
+        <td>{{ b.descricao || '—' }}</td>
+        <td>{{ b.valor | number:'1.2-2' }}</td>
+        <td>{{ b.ativo ? 'Sim' : 'Não' }}</td>
+        <td class="actions">
+          <button class="btn btn-warning" (click)="editar(b.id!)">Editar</button>
+          <button class="btn btn-danger"  (click)="excluir(b)">Excluir</button>
+        </td>
+      </tr>
+      <tr *ngIf="beneficios.length === 0">
+        <td colspan="6" style="text-align:center; color:#999;">Nenhum benefício cadastrado.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

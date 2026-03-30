@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="card">
+    <div class="page-header">
+      <h2>{{ titulo }}</h2>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="erro">{{ erro }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      <div class="form-group">
+        <label>Nome *</label>
+        <input formControlName="nome" placeholder="Nome do benefício" />
+        <small style="color:#d32f2f"
+          *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
+          Nome é obrigatório (máx. 100 caracteres).
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <input formControlName="descricao" placeholder="Descrição opcional" />
+      </div>
+
+      <div class="form-group">
+        <label>Valor (R$) *</label>
+        <div style="position:relative">
+          <span style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:#666;pointer-events:none">R$</span>
+          <input
+            [value]="valorFormatado"
+            (input)="onValorInput($event)"
+            placeholder="0,00"
+            inputmode="numeric"
+            style="padding-left:2.5rem"
+            [class.input-error]="form.get('valor')?.invalid && form.get('valor')?.touched" />
+        </div>
+        <small style="color:#d32f2f"
+          *ngIf="form.get('valor')?.invalid && form.get('valor')?.touched">
+          Informe um valor maior que zero.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" formControlName="ativo" style="width:auto;margin-right:.5rem" />
+          Ativo
+        </label>
+      </div>
+
+      <div class="actions" style="margin-top:1rem">
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid || salvando">
+          {{ salvando ? 'Salvando...' : 'Salvar' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
